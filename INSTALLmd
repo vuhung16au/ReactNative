@@ -1,0 +1,185 @@
+# INSTALLmd
+
+## Clean Build, Build, and Run the React Native App
+
+This guide explains how to clean, build, and run the app in development mode on **macOS**, **Windows**, and **Linux**.
+
+---
+
+## Prerequisites
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- [Yarn](https://classic.yarnpkg.com/en/docs/install/) or npm
+- [Watchman](https://facebook.github.io/watchman/) (macOS/Linux, optional but recommended)
+- [React Native CLI](https://reactnative.dev/docs/environment-setup)
+- **Android Studio** (for Android)
+- **Xcode** (for iOS, macOS only)
+
+---
+
+## Using a `.env` File for API Keys
+
+To securely manage API keys and environment variables, use a `.env` file in your project root. This file should **not** be committed to version control (add `.env` to your `.gitignore`).
+
+### 1. Create a `.env` file
+In the root of your project, create a file named `.env`:
+
+```
+API_KEY=your_api_key_here
+ANOTHER_SECRET=your_other_secret
+```
+
+### 2. Install Environment Variable Library
+Install a library to load environment variables in React Native. Common options:
+- [`react-native-dotenv`](https://github.com/goatandsheep/react-native-dotenv)
+- [`react-native-config`](https://github.com/luggit/react-native-config)
+
+Example (using `react-native-config`):
+```
+yarn add react-native-config
+# or
+npm install react-native-config
+```
+
+Follow the library's setup instructions for iOS and Android.
+
+### 3. Access Variables in Code
+Import and use your variables in your JS code:
+
+```js
+import Config from 'react-native-config';
+
+const apiKey = Config.API_KEY;
+```
+
+---
+
+## Building and Running on macOS
+
+Follow these steps to build and run the app on macOS for both iOS and Android platforms:
+
+1. **Install dependencies:**
+   ```
+   yarn install
+   # or
+   npm install
+   ```
+
+2. **Clean previous builds and caches:**
+   ```
+   yarn clean || rm -rf node_modules/ && yarn cache clean
+yarn start --reset-cache # optional: reset Metro cache
+cd android && ./gradlew clean && cd ..
+cd ios && xcodebuild clean && cd ..
+   ```
+
+3. **Install CocoaPods dependencies for iOS:**
+   ```
+   cd ios && pod install && cd ..
+   ```
+
+4. **Start Metro Bundler:**
+   ```
+   yarn start
+   # or
+   npm start
+   ```
+
+5. **Run the app:**
+   - **iOS:**
+     ```
+     yarn ios
+     # or
+     npm run ios
+     ```
+     This will open the iOS simulator and install the app.
+   - **Android:**
+     ```
+     yarn android
+     # or
+     npm run android
+     ```
+     Make sure an Android emulator is running or a device is connected.
+
+**Tips:**
+- For iOS, ensure you have the correct Xcode version installed from the App Store.
+- If you encounter build issues on iOS, try running `cd ios && pod install --repo-update`.
+- You can open the iOS project in Xcode with `open ios/AwesomeProject.xcworkspace` for advanced debugging.
+
+---
+
+## 1. Install Dependencies
+
+```
+yarn install
+# or
+npm install
+```
+
+---
+
+## 2. Clean Build Artifacts
+
+### macOS/Linux
+```
+# Clean node_modules and cache
+yarn clean || rm -rf node_modules/ && yarn cache clean
+# Clean Android build
+cd android && ./gradlew clean && cd ..
+# Clean iOS build (macOS only)
+cd ios && xcodebuild clean && cd ..
+```
+
+### Windows
+```
+# Clean node_modules and cache
+del /s /q node_modules & yarn cache clean
+# Clean Android build
+cd android && gradlew clean && cd ..
+```
+
+---
+
+## 3. Start Metro Bundler
+
+```
+yarn start
+# or
+npm start
+```
+
+---
+
+## 4. Run the App
+
+### Android (macOS, Windows, Linux)
+```
+yarn android
+# or
+npm run android
+```
+
+### iOS (macOS only)
+```
+yarn ios
+# or
+npm run ios
+```
+
+---
+
+## 5. Development Mode
+- The app runs in development mode by default.
+- Enable hot reloading from the in-app developer menu (shake device or press `Cmd+D`/`Ctrl+M`).
+
+---
+
+## Troubleshooting
+- If you encounter issues, try cleaning the build and reinstalling dependencies.
+- For iOS, ensure you have the correct Xcode version and CocoaPods installed (`cd ios && pod install`).
+- For Android, ensure Android Studio and SDKs are properly set up.
+
+---
+
+## References
+- [React Native Environment Setup](https://reactnative.dev/docs/environment-setup)
+- [Metro Bundler](https://facebook.github.io/metro/)
