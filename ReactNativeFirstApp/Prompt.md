@@ -73,3 +73,28 @@ Create `README.md` and says that this is a demo on React Native core components.
 List all the RN components used in this project. 
 
 Also mention that we have real-world examples to show weather, location and news 
+
+# Checkbox 
+
+Left hand side of "I agree to the terms" ... is a checkbox.
+And users are able to  check or uncheck the checkbox.
+Users can only submit if they agree to the terms
+
+Please change the UI. 
+
+# country list drop down
+
+
+Improve the UI of 
+
+```js
+  const countryList = [
+    'Australia', 'Canada', 'United States', 'United Kingdom', 'Singapore', 'Vietnam', 'India', 'Germany', 'France', 'Japan', 'Other'
+  ];
+`````` 
+
+users can select by scrolling the countries. 
+
+Show full list of all countries in the world 
+
+https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_area  

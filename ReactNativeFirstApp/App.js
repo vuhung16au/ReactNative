@@ -8,7 +8,7 @@ import {
   View,
   Image,
   ScrollView,
-  Button,
+  // Removed Button from here
   Pressable,
   Modal,
   StatusBar,
@@ -35,100 +35,117 @@ import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
-import { Provider as PaperProvider, Appbar, Card, Title, Paragraph, Checkbox } from 'react-native-paper';
+import { Provider as PaperProvider, Appbar, Card, Title, Paragraph, Checkbox, BottomNavigation, Button, Chip, useTheme } from 'react-native-paper';
 
-// import DemoScreen from './DemoScreen';
 import WeatherScreen from './WeatherScreen';
 import MapScreen from './MapScreen';
 import NewsListScreen from './NewsListScreen';
 import FormScreen from './FormScreen';
 import DetailsScreen from './DetailsScreen';
 import SettingsScreen from './SettingsScreen';
+import WeatherScreenFull from './WeatherScreenFull';
 
 // Create navigators
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-// Theme configuration
-const LightTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#2196F3',
-    background: '#f0f0f0',
-    card: '#ffffff',
-    text: '#333333',
-    border: '#c7c7c7',
-  },
-};
-
-const CustomDarkTheme = {
+// Team Paper color palette
+const TeamPaperDarkTheme = {
   ...DarkTheme,
+  roundness: 16,
   colors: {
     ...DarkTheme.colors,
-    primary: '#4dabf5',
-    background: '#121212',
-    card: '#1e1e1e',
-    text: '#ffffff',
-    border: '#272727',
+    primary: '#a594f9', // purple accent
+    accent: '#6247aa',
+    background: '#18122B',
+    surface: '#393053',
+    card: '#393053',
+    text: '#fff',
+    placeholder: '#b8b8d1',
+    disabled: '#6d6d8e',
+    notification: '#a594f9',
+    border: '#393053',
+  },
+  fonts: {
+    regular: { fontFamily: 'System', fontWeight: '400' },
+    medium: { fontFamily: 'System', fontWeight: '500' },
+    bold: { fontFamily: 'System', fontWeight: '700' },
+    heavy: { fontFamily: 'System', fontWeight: '900' },
+    labelMedium: { fontFamily: 'System', fontWeight: '500' }, 
+    labelLarge: { fontFamily: 'System', fontWeight: '500' }, // Add missing labelLarge
+    labelSmall: { fontFamily: 'System', fontWeight: '400' }, // Add extra variants for completeness
+    bodySmall: { fontFamily: 'System', fontWeight: '400' },
+    bodyMedium: { fontFamily: 'System', fontWeight: '500' },
+    bodyLarge: { fontFamily: 'System', fontWeight: '500' },
+    titleSmall: { fontFamily: 'System', fontWeight: '500' },
+    titleMedium: { fontFamily: 'System', fontWeight: '600' },
+    titleLarge: { fontFamily: 'System', fontWeight: '700' },
+    headlineSmall: { fontFamily: 'System', fontWeight: '700' },
+    headlineMedium: { fontFamily: 'System', fontWeight: '700' },
+    headlineLarge: { fontFamily: 'System', fontWeight: '700' },
   },
 };
 
-// Tab Navigator Component
-const MainTabNavigator = ({ theme }) => {
-  const navigation = useNavigation();
+// Paper Appbar for all screens
+const PaperHeader = ({ title, navigation, back }) => {
+  const theme = useTheme();
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: true,
-        headerStyle: {
-          backgroundColor: theme.colors.card,
-        },
-        headerTintColor: theme.colors.text,
-        headerLeft: () => (
-          <Pressable onPress={() => navigation.toggleDrawer()} style={{ marginLeft: 15 }}>
-            <Ionicons name="menu" size={24} color={theme.colors.text} />
-          </Pressable>
-        ),
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Weather') {
-            iconName = focused ? 'cloud' : 'cloud-outline';
-          } else if (route.name === 'Map') {
-            iconName = focused ? 'map' : 'map-outline';
-          } else if (route.name === 'News') {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'EOI') {
-            iconName = focused ? 'document-text' : 'document-text-outline';
-          }
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-      })}
-    >
-      {/* <Tab.Screen name="Home" component={DemoScreen} /> */}
-      <Tab.Screen name="Weather" component={WeatherScreen} />
-      <Tab.Screen name="Map" component={MapScreen} />
-      <Tab.Screen 
-        name="News" 
-        component={NewsListScreen} 
-        options={{ tabBarLabel: 'News', title: 'News' }} 
-      />
-      <Tab.Screen 
-        name="EOI" 
-        component={FormScreen} 
-        options={{ tabBarLabel: 'EOI', title: 'EOI' }} 
-      />
-    </Tab.Navigator>
+    <Appbar.Header style={{ backgroundColor: theme.colors.surface }}>
+      {back ? (
+        <Appbar.BackAction onPress={navigation.goBack} color={theme.colors.primary} />
+      ) : (
+        <Appbar.Action icon="menu" onPress={navigation.toggleDrawer} color={theme.colors.primary} />
+      )}
+      <Appbar.Content title={title} titleStyle={{ color: theme.colors.text }} />
+    </Appbar.Header>
+  );
+};
+
+// Paper BottomNavigation for tabs
+const MainTabNavigator = ({ theme }) => {
+  const [index, setIndex] = useState(0);
+  const routes = [
+    { key: 'weather', title: 'Weather', icon: 'cloud' },
+    { key: 'map', title: 'Map', icon: 'map' },
+    { key: 'news', title: 'News', icon: 'newspaper' },
+    { key: 'eoi', title: 'EOI', icon: 'file-document' },
+  ];
+  
+  // Define screen components separately to ensure proper rendering
+  const renderWeatherScreen = () => <WeatherScreen />;
+  const renderMapScreen = () => <MapScreen />;
+  const renderNewsScreen = () => <NewsListScreen />;
+  const renderFormScreen = () => <FormScreen />;
+  
+  const renderScene = BottomNavigation.SceneMap({
+    weather: renderWeatherScreen,
+    map: renderMapScreen,
+    news: renderNewsScreen,
+    eoi: renderFormScreen,
+  });
+  
+  return (
+    <BottomNavigation
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+      barStyle={{ backgroundColor: theme.colors.surface, borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+      activeColor={theme.colors.primary}
+      inactiveColor={theme.colors.placeholder}
+      shifting={false}
+    />
   );
 };
 
 // Stack Navigator (wrapping Tab Navigator)
 const MainStackNavigator = ({ navigation, theme }) => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        header: (props) => <PaperHeader {...props} />, // Use Paper Appbar
+      }}
+    >
       <Stack.Screen 
         name="MainTabs" 
         children={() => <MainTabNavigator theme={theme} />} 
@@ -141,6 +158,11 @@ const MainStackNavigator = ({ navigation, theme }) => {
         component={DetailsScreen}
         options={({ route }) => ({ title: route.params?.item?.title || 'Details' })} 
       />
+      <Stack.Screen
+        name="WeatherScreenFull"
+        component={WeatherScreenFull}
+        options={{ title: 'Full Weather' }}
+      />
     </Stack.Navigator>
   );
 };
@@ -148,17 +170,15 @@ const MainStackNavigator = ({ navigation, theme }) => {
 // Main App Component
 export default function App() {
   const systemColorScheme = useColorScheme();
-  const [isDarkMode, setIsDarkMode] = useState(systemColorScheme === 'dark');
+  const [isDarkMode, setIsDarkMode] = useState(true); // Always dark for Team Paper
   const [isPortrait, setIsPortrait] = useState(
     Dimensions.get('window').height > Dimensions.get('window').width
   );
 
   useEffect(() => {
-    // Handle orientation changes
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
       setIsPortrait(window.height > window.width);
     });
-    
     return () => subscription?.remove();
   }, []);
 
@@ -166,24 +186,28 @@ export default function App() {
     setIsDarkMode(!isDarkMode);
   };
 
-  const theme = isDarkMode ? CustomDarkTheme : LightTheme;
-  
+  const theme = TeamPaperDarkTheme;
+
   // Drawer Navigator (wrapping Stack Navigator)
   const AppDrawerNavigator = () => (
     <Drawer.Navigator
       screenOptions={{
-        headerShown: false, // Hide drawer header, show only tab header
+        headerShown: false,
         drawerType: isPortrait ? 'front' : 'permanent',
         drawerStyle: {
           width: isPortrait ? '70%' : 280,
+          backgroundColor: theme.colors.surface,
         },
+        drawerActiveTintColor: theme.colors.primary,
+        drawerInactiveTintColor: theme.colors.placeholder,
+        sceneContainerStyle: { backgroundColor: theme.colors.background },
       }}
     >
       <Drawer.Screen 
         name="MainStack" 
         children={() => <MainStackNavigator theme={theme} />} 
         options={{
-          title: "React Native Demo",
+          title: "Team Paper Demo",
         }}
       />
       <Drawer.Screen 
@@ -199,8 +223,8 @@ export default function App() {
     <PaperProvider theme={theme}>
       <NavigationContainer theme={theme}>
         <StatusBar 
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'} 
-          backgroundColor={theme.colors.card}
+          barStyle={'light-content'} 
+          backgroundColor={theme.colors.surface}
         />
         <AppDrawerNavigator />
       </NavigationContainer>
@@ -346,7 +370,6 @@ export const styles = StyleSheet.create({
   weatherCard: {
     elevation: 3,
     borderRadius: 10,
-    overflow: 'hidden',
   },
   weatherDetails: {
     flexDirection: 'row',

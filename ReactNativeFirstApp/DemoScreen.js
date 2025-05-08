@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, Button, Pressable, Modal, Alert, SafeAreaView, ActivityIndicator, Platform, useWindowDimensions, RefreshControl } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { StyleSheet, Text, View, Image, ScrollView, Pressable, Modal, Alert, SafeAreaView, ActivityIndicator, Platform, useWindowDimensions, RefreshControl } from 'react-native';
+import { Appbar, Button } from 'react-native-paper';
 import { styles } from './App';
 
 const DemoScreen = ({ navigation }) => {
@@ -112,7 +112,9 @@ const DemoScreen = ({ navigation }) => {
         {/* Button */}
         <View style={[styles.section, isLandscape && styles.landscapeSection]}>
           <Text style={[styles.sectionTitle, responsiveStyles.fontSize]}>Button</Text>
-          <Button title="Press Me" onPress={() => Alert.alert('Button Pressed', 'You clicked the button!')} />
+          <Button mode="contained" onPress={() => Alert.alert('Button Pressed', 'You clicked the button!')} style={{ marginTop: 8 }}>
+            Press Me
+          </Button>
         </View>
 
         {/* Pressable */}
@@ -126,7 +128,9 @@ const DemoScreen = ({ navigation }) => {
         {/* Modal */}
         <View style={[styles.section, isLandscape && styles.landscapeSection]}>
           <Text style={[styles.sectionTitle, responsiveStyles.fontSize]}>Modal</Text>
-          <Button title="Show Modal" onPress={() => setModalVisible(true)} />
+          <Button mode="contained" onPress={() => setModalVisible(true)} style={{ marginTop: 8 }}>
+            Show Modal
+          </Button>
           <Modal
             animationType="slide"
             transparent={true}
@@ -153,7 +157,9 @@ const DemoScreen = ({ navigation }) => {
         {/* ActivityIndicator */}
         <View style={[styles.section, isLandscape && styles.landscapeSection]}>
           <Text style={[styles.sectionTitle, responsiveStyles.fontSize]}>ActivityIndicator</Text>
-          <Button title="Start Loading" onPress={startLoading} disabled={loading} />
+          <Button mode="contained" onPress={startLoading} disabled={loading} style={{ marginTop: 8 }}>
+            Start Loading
+          </Button>
           {loading && <ActivityIndicator size="large" color="#0000ff" style={styles.activityIndicator} />}
           {!loading && <Text style={responsiveStyles.fontSize}>Press 'Start Loading' to see the indicator.</Text>}
         </View>
@@ -161,7 +167,9 @@ const DemoScreen = ({ navigation }) => {
         {/* Alert */}
         <View style={[styles.section, isLandscape && styles.landscapeSection]}>
           <Text style={[styles.sectionTitle, responsiveStyles.fontSize]}>Alert</Text>
-          <Button title="Show Alert" onPress={showAlert} />
+          <Button mode="contained" onPress={showAlert} style={{ marginTop: 8 }}>
+            Show Alert
+          </Button>
           <Text style={[styles.alertInfo, responsiveStyles.fontSize]}>Press the button above to trigger a basic Alert.</Text>
         </View>
       </ScrollView>

@@ -27,6 +27,21 @@ This project is a demo showcasing the use of React Native core components, along
 ## Getting Started
 See `INSTALLmd` for setup and running instructions.
 
+
+
 ---
 
 This project is intended for learning and demonstration purposes.
+
+# Screenshots
+
+<table>
+  <tr>
+    <td><img src="01Weather.png" alt="Weather screen" width="200"/></td>
+    <td><img src="02Map.png" alt="Map screen" width="200"/></td>
+    <td><img src="03News.png" alt="News screen" width="200"/></td>
+    <td><img src="04EOI.png" alt="EOI screen" width="200"/></td>
+  </tr>
+</table>
+
+![Vs Code](VsCode.png)

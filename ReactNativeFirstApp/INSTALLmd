@@ -1,0 +1,110 @@
+# INSTALLmd
+
+## Clean Build, Build, and Run the React Native App
+
+This guide explains how to clean, build, and run the app in development mode on **macOS**
+---
+
+## Prerequisites
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- [Watchman](https://facebook.github.io/watchman/) (macOS/Linux, optional but recommended)
+- [React Native CLI](https://reactnative.dev/docs/environment-setup)
+- **Xcode** (for iOS, macOS only)
+
+---
+
+## Using a `.env` File for API Keys
+
+To securely manage API keys and environment variables, use a `.env` file in your project root. This file should **not** be committed to version control (add `.env` to your `.gitignore`).
+
+### 1. Create a `.env` file
+In the root of your project, create a file named `.env`:
+
+```
+API_KEY=your_api_key_here
+ANOTHER_SECRET=your_other_secret
+```
+
+### 2. Install Environment Variable Library
+Install a library to load environment variables in React Native. Common options:
+- [`react-native-dotenv`](https://github.com/goatandsheep/react-native-dotenv)
+- [`react-native-config`](https://github.com/luggit/react-native-config)
+
+Example (using `react-native-config`):
+```
+npm install react-native-config
+```
+
+Follow the library's setup instructions for iOS.
+
+---
+
+## Building and Running on macOS
+
+Follow these steps to build and run the app on macOS for both iOS and Android platforms:
+
+1. **Install dependencies:**
+   ```
+   npm install
+   ```
+
+2. **Clean previous builds and caches:**
+
+3. **Install CocoaPods dependencies for iOS:**
+   ```
+   cd ios && pod install && cd ..
+   ```
+
+4. **Start Metro Bundler:**
+   ```
+   npm start
+   ```
+
+4.1 Start Metro Bundler in a separate terminal window:
+   ```
+   npx react-native start
+   ```
+5. **Run the app:**
+
+
+
+`npx react-native run-ios`
+
+---
+
+## 1. Install Dependencies
+
+   ```
+   npm install
+   ```
+
+---
+
+## 2. Clean Build Artifacts
+
+### macOS
+
+
+---
+
+## 3. Start Metro Bundler
+
+```
+npm start
+```
+
+---
+
+## 4. Run the App
+
+### iOS (macOS only)
+```
+npm run ios
+```
+
+---
+
+## 5. Development Mode
+- The app runs in development mode by default.
+- Enable hot reloading from the in-app developer menu (shake device or press `Cmd+D`/`Ctrl+M`).
+
