@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Native Core Components - Code Samples</title>
+  <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css" rel="stylesheet" />
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 24px; background: #f9f9f9; color: #222; }
+    h1 { color: #2d5be3; }
+    h2 { color: #1a3a6b; margin-top: 2em; }
+    pre { background: #f4f4f4; padding: 12px; border-radius: 6px; overflow-x: auto; }
+    code { font-family: 'Fira Mono', 'Consolas', monospace; }
+    .desc { margin-bottom: 0.5em; }
+  </style>
+</head>
+<body>
+  <h1>React Native Core Components: Code Samples</h1>
+  <p>This page explains how the most important React Native core components are used in this project, with real code examples. Each example is simple and easy to understand for students.</p>
+
+  <h2>View</h2>
+  <div class="desc">The <b>View</b> component is a basic container for layout and grouping UI elements, similar to a <code>&lt;div&gt;</code> in web development.</div>
+  <pre><code class="language-jsx">{`<View style={styles.section}>
+  <Text style={styles.sectionTitle}>View Example</Text>
+  <View style={styles.viewBox}>
+    <Text>This is inside a View.</Text>
+  </View>
+</View>`}</code></pre>
+
+  <h2>Text</h2>
+  <div class="desc">The <b>Text</b> component displays text. You can style it and use custom fonts.</div>
+  <pre><code class="language-jsx">{`<Text style={styles.header}>Welcome to the App!</Text>
+<Text style={styles.basicText}>This is a simple text example.</Text>`}</code></pre>
+
+  <h2>Image</h2>
+  <div class="desc">The <b>Image</b> component shows images from the web or local files. You can set <code>resizeMode</code> for different display styles.</div>
+  <pre><code class="language-jsx">{`<Image
+  source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+  style={styles.tinyLogo}
+  resizeMode="contain"
+/>
+<Image
+  source={require('../assets/icon.png')}
+  style={styles.tinyLogo}
+  resizeMode="cover"
+/>`}</code></pre>
+
+  <h2>ScrollView</h2>
+  <div class="desc">The <b>ScrollView</b> component makes its children scrollable. Useful for forms or long content.</div>
+  <pre><code class="language-jsx">{`<ScrollView style={styles.scrollContainer}>
+  {/* Many child components here */}
+</ScrollView>`}</code></pre>
+
+  <h2>FlatList</h2>
+  <div class="desc">The <b>FlatList</b> component efficiently renders large lists. You provide data and a render function.</div>
+  <pre><code class="language-jsx">{`<FlatList
+  data={data}
+  keyExtractor={item => item.id.toString()}
+  renderItem={({ item }) => (
+    <View style={styles.listItem}>
+      <Text>{item.title}</Text>
+    </View>
+  )}
+/>`}</code></pre>
+
+  <h2>Pressable</h2>
+  <div class="desc">The <b>Pressable</b> component is a modern way to handle touch interactions, with visual feedback.</div>
+  <pre><code class="language-jsx">{`<Pressable style={styles.pressableButton} onPress={handlePress}>
+  <Text style={styles.pressableText}>Press Me</Text>
+</Pressable>`}</code></pre>
+
+  <h2>Modal</h2>
+  <div class="desc">The <b>Modal</b> component displays content above the rest of the app, often for dialogs or popups.</div>
+  <pre><code class="language-jsx">{`<Modal
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => setModalVisible(false)}
+>
+  <View style={styles.centeredView}>
+    <View style={styles.modalView}>
+      <Text>This is a Modal!</Text>
+      <Pressable onPress={() => setModalVisible(false)}>
+        <Text>Hide Modal</Text>
+      </Pressable>
+    </View>
+  </View>
+</Modal>`}</code></pre>
+
+  <h2>ActivityIndicator</h2>
+  <div class="desc">The <b>ActivityIndicator</b> shows a loading spinner, useful for async operations.</div>
+  <pre><code class="language-jsx">{`{loading && <ActivityIndicator size="large" color="#0000ff" />}`}</code></pre>
+
+  <h2>SafeAreaView</h2>
+  <div class="desc">The <b>SafeAreaView</b> ensures your content doesn't overlap with device notches or system UI.</div>
+  <pre><code class="language-jsx">{`<SafeAreaView style={styles.container}>
+  {/* App content here */}
+</SafeAreaView>`}</code></pre>
+
+  <h2>Navigation Components</h2>
+  <div class="desc"><b>Tabs</b> - Bottom tab navigation using Expo Router's file-based routing.</div>
+  <pre><code class="language-jsx">{`// app/tabs/_layout.tsx
+import { Tabs } from 'expo-router';
+
+export default function TabLayout() {
+  return (
+    <Tabs>
+      <Tabs.Screen name="index" options={{ title: 'Home' }} />
+      <Tabs.Screen name="menu" options={{ title: 'Menu' }} />
+      <Tabs.Screen name="about" options={{ title: 'About' }} />
+    </Tabs>
+  );
+}`}</code></pre>
+
+  <div class="desc"><b>Stack</b> - Push/pop navigation for screens.</div>
+  <pre><code class="language-jsx">{`// app/stack/_layout.tsx
+import { Stack } from 'expo-router';
+
+export default function StackLayout() {
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ title: 'Products' }} />
+      <Stack.Screen name="[id]" options={{ title: 'Product Details' }} />
+    </Stack>
+  );
+}`}</code></pre>
+
+  <div class="desc"><b>Drawer</b> - Side menu navigation.</div>
+  <pre><code class="language-jsx">{`// app/drawer/_layout.tsx
+import { Drawer } from 'expo-router/drawer';
+
+export default function DrawerLayout() {
+  return (
+    <Drawer>
+      <Drawer.Screen name="index" options={{ title: 'Home' }} />
+      <Drawer.Screen name="settings" options={{ title: 'Settings' }} />
+      <Drawer.Screen name="help" options={{ title: 'Help' }} />
+    </Drawer>
+  );
+}`}</code></pre>
+
+  <div class="desc"><b>Link</b> - Expo Router link component for navigation.</div>
+  <pre><code class="language-jsx>{`import { Link } from 'expo-router';
+
+<Link href="/stack/123">
+  <Text>Go to Product 123</Text>
+</Link>`}</code></pre>
+
+  <h2>UI Components</h2>
+  <div class="desc"><b>StatusBar</b> - Control for device status bar.</div>
+  <pre><code class="language-jsx">{`import { StatusBar } from 'expo-status-bar';
+
+<StatusBar style="auto" />`}</code></pre>
+
+  <div class="desc"><b>Animated.View</b> - Container with animation capabilities.</div>
+  <pre><code class="language-jsx">{`import Animated from 'react-native-reanimated';
+
+<Animated.View entering={FadeIn} style={styles.animatedBox} />`}</code></pre>
+
+  <div class="desc"><b>TouchableOpacity</b> - Touch feedback component.</div>
+  <pre><code class="language-jsx">{`import { TouchableOpacity } from 'react-native';
+
+<TouchableOpacity onPress={onPress} style={styles.button}>
+  <Text>Tap Me</Text>
+</TouchableOpacity>`}</code></pre>
+
+  <div class="desc"><b>Switch</b> - Toggle component for theme switching.</div>
+  <pre><code class="language-jsx">{`import { Switch } from 'react-native';
+
+<Switch value={isDark} onValueChange={toggleTheme} color={isDark ? '#2d5be3' : '#ccc'} />`}</code></pre>
+
+  <h2>Layout & Organization</h2>
+  <div class="desc"><b>Fragment</b> - Group components without extra DOM nodes.</div>
+  <pre><code class="language-jsx">{`import { Fragment } from 'react';
+
+<Fragment>
+  <Text>Part 1</Text>
+  <Text>Part 2</Text>
+</Fragment>`}</code></pre>
+
+  <div class="desc"><b>StyleSheet</b> - Structured styling system.</div>
+  <pre><code class="language-jsx">{`import { StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16 },
+  title: { fontSize: 20, fontWeight: 'bold' },
+});`}</code></pre>
+
+  <div class="desc"><b>Platform-specific code</b> - Conditional rendering for iOS/Android.</div>
+  <pre><code class="language-jsx">{`import { Platform, Text } from 'react-native';
+
+<Text>{Platform.OS === 'ios' ? 'iOS Device' : 'Android Device'}</Text>`}</code></pre>
+
+  <hr>
+  <p>Explore the project source code for more real-world examples of these components in action!</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+</body>
+</html>
